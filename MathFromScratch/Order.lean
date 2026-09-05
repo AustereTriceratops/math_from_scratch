@@ -46,13 +46,10 @@ theorem le_add_right_cancel (a b c : Nat) :
   apply (add_right_cancel (add a n_0) b c)
   exact h
 
-
-theorem lt_add_right_cancel (a b c : Nat) :
-    LT (add a c) (add b c) → LT a b := by
-  unfold LT
-  rw [add_comm]
-  rw [← add_succ]
-  rw [add_comm]
+theorem le_add_left_cancel (a b c : Nat) :
+    LE (add c a) (add c b) → LE a b := by
+  nth_rw 1 [add_comm]
+  nth_rw 2 [add_comm]
   apply le_add_right_cancel
 
 theorem le_zero_eq_zero (a : Nat) :
@@ -62,6 +59,15 @@ theorem le_zero_eq_zero (a : Nat) :
   rcases h with ⟨b, hb⟩
   exact add_eq_zero_implies_left_zero a b hb
 
+
+
+theorem lt_add_right_cancel (a b c : Nat) :
+    LT (add a c) (add b c) → LT a b := by
+  unfold LT
+  rw [add_comm]
+  rw [← add_succ]
+  rw [add_comm]
+  apply le_add_right_cancel
 
 theorem lt_succ (a : Nat) :
     LT a (.succ a) := by
@@ -79,6 +85,5 @@ theorem left_add_le_sum (a b : Nat) :
 theorem right_add_le_sum (a b : Nat) :
     LE b (add a b) := by
   sorry
-
 
 end math

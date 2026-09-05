@@ -6,6 +6,34 @@ namespace math
 def divides (a b : Nat) : Prop :=
   ∃ c, mul a c = b
 
+theorem divides_trans (a b c : Nat) :
+    divides a b → divides b c → divides a c := by
+  unfold divides
+  intro hab hbc
+  rcases hab with ⟨n0, hab⟩
+  rcases hbc with ⟨n1, hbc⟩
+  rw [←hab] at hbc
+  rw [mul_assoc] at hbc
+  use (mul n0 n1)
+
+theorem divides_additive (a b c : Nat) :
+    divides a b → divides a c → divides a (add b c) := by
+  unfold divides
+  intro hab hac
+  rcases hab with ⟨n0, hab⟩
+  rcases hac with ⟨n1, hac⟩
+  use (add n0 n1)
+  rw [mul_add, hab, hac]
+
+theorem divides_multiplicative (a b c : Nat) :
+    divides a b → divides a (mul b c) := by
+  unfold divides
+  intro hab
+  rcases hab with ⟨n, hab⟩
+  use (mul n c)
+  rw [← mul_assoc]
+  rw [hab]
+
 theorem gt_divides (a b : Nat) :
     GT a b → ¬(divides a b) := by
   sorry
@@ -29,11 +57,11 @@ theorem only_one_divides_consecutive (a b : Nat) :
     (divides a b) ∧ (divides a (add b ,1)) → a = ,1 := by
   sorry
 
-def prime (p : Nat) : Prop :=
-  ∀ a : Nat, (LT a p) ∧ ¬(a = ,1)→ ¬(divides a p)
-
 -- def prime (p : Nat) : Prop :=
---     LT ,1 p ∧ (∀ a : Nat, divides a p → (a = p ∨ a = ,1))
+--   ∀ a : Nat, (LT a p) ∧ ¬(a = ,1)→ ¬(divides a p)
+
+def prime (p : Nat) : Prop :=
+    LT ,1 p ∧ (∀ a : Nat, divides a p → (a = p ∨ a = ,1))
 
 theorem two_is_prime :
     prime (.succ (.succ .zero)) := by
