@@ -86,6 +86,11 @@ theorem add_one_eq_succ (n : Nat) :
   rw [add_succ]
   rw [add_zero]
 
+theorem one_add_eq_succ (n : Nat) :
+    add ,1 n = n.succ := by
+  rw [add_comm]
+  rw [add_one_eq_succ]
+
 theorem succ_eq_add_one (n : Nat) :
     n.succ = add n ,1 := by
   rw [add_one_eq_succ]

@@ -34,9 +34,11 @@ theorem divides_multiplicative (a b c : Nat) :
   rw [← mul_assoc]
   rw [hab]
 
-theorem gt_divides (a b : Nat) :
-    GT a b → ¬(divides a b) := by
-  sorry
+theorem everything_divides_zero (a : Nat) :
+    divides a ,0 := by
+  unfold divides
+  use ,0
+  rw [mul_zero]
 
 theorem zero_divides_only_zero (a : Nat) :
     divides ,0 a → a = ,0 := by
@@ -45,7 +47,6 @@ theorem zero_divides_only_zero (a : Nat) :
   rcases h with ⟨b, hb⟩
   rw [zero_mul] at hb
   rw [hb]
-
 
 theorem one_divides_everything (a : Nat) :
     divides ,1 a := by
@@ -56,6 +57,21 @@ theorem one_divides_everything (a : Nat) :
 theorem only_one_divides_consecutive (a b : Nat) :
     (divides a b) ∧ (divides a (add b ,1)) → a = ,1 := by
   sorry
+
+
+theorem divides_implies_le (a b : Nat) :
+    divides a b → LT ,0 b → LE a b := by
+  unfold divides LT LE
+  intro h_div hb
+  rcases h_div with ⟨n, h_div⟩
+  rcases n with _ | m
+  . rcases hb with ⟨m, hb⟩
+    rw [one_add_eq_succ] at hb
+    rw [← hb] at h_div
+    contradiction
+  . rw [mul_succ, add_comm] at h_div
+    use (mul a m)
+
 
 -- def prime (p : Nat) : Prop :=
 --   ∀ a : Nat, (LT a p) ∧ ¬(a = ,1)→ ¬(divides a p)
