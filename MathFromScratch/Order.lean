@@ -60,7 +60,6 @@ theorem le_zero_eq_zero (a : Nat) :
   exact add_eq_zero_implies_left_zero a b hb
 
 
-
 theorem lt_add_right_cancel (a b c : Nat) :
     LT (add a c) (add b c) → LT a b := by
   unfold LT
@@ -71,7 +70,9 @@ theorem lt_add_right_cancel (a b c : Nat) :
 
 theorem lt_succ (a : Nat) :
     LT a (.succ a) := by
-  sorry
+  unfold LT LE
+  use ,0
+  rw [add_zero]
 
 -- theorem never_lt_zero (a : Nat) :
 --     ¬(LT a ,0) := by
@@ -80,10 +81,13 @@ theorem lt_succ (a : Nat) :
 
 theorem left_add_le_sum (a b : Nat) :
     LE a (add a b) := by
-  sorry
+  unfold LE
+  use b
 
 theorem right_add_le_sum (a b : Nat) :
     LE b (add a b) := by
-  sorry
+  unfold LE
+  use a
+  rw [add_comm]
 
 end math
