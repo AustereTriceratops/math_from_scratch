@@ -8,6 +8,7 @@ inductive Nat: Type where
 
 notation ",0" => Nat.zero
 notation ",1" => Nat.succ Nat.zero
+notation ",2" => Nat.zero.succ.succ
 
 #check Nat.zero
 #check Nat.succ
@@ -258,5 +259,11 @@ theorem mul_comm (a b : Nat) :
     rw [mul_succ]
     rw [succ_mul]
     rw [ih]
+
+theorem mul_eq_implies_eq_one (a b : Nat) :
+    mul a b = a → b = ,1 := by
+  intro h
+  sorry
+
 
 end math

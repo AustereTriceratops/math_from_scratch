@@ -17,6 +17,8 @@ def GT (a b : Nat) : Prop :=
 
 ---
 
+
+-- less than or equal (le)
 theorem le_refl (a : Nat) :
     LE a a := by
   unfold LE
@@ -59,6 +61,19 @@ theorem le_zero_eq_zero (a : Nat) :
   rcases h with ⟨b, hb⟩
   exact add_eq_zero_implies_left_zero a b hb
 
+theorem left_add_le_sum (a b : Nat) :
+    LE a (add a b) := by
+  unfold LE
+  use b
+
+theorem right_add_le_sum (a b : Nat) :
+    LE b (add a b) := by
+  unfold LE
+  use a
+  rw [add_comm]
+
+
+-- less than (lt)
 
 theorem lt_add_right_cancel (a b c : Nat) :
     LT (add a c) (add b c) → LT a b := by
@@ -78,16 +93,5 @@ theorem lt_succ (a : Nat) :
 --     ¬(LT a ,0) := by
 --   unfold LT LE
 --   intro h
-
-theorem left_add_le_sum (a b : Nat) :
-    LE a (add a b) := by
-  unfold LE
-  use b
-
-theorem right_add_le_sum (a b : Nat) :
-    LE b (add a b) := by
-  unfold LE
-  use a
-  rw [add_comm]
 
 end math

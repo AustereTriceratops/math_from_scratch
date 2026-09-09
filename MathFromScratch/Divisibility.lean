@@ -80,17 +80,26 @@ def prime (p : Nat) : Prop :=
     LT ,1 p ∧ (∀ a : Nat, divides a p → (a = p ∨ a = ,1))
 
 theorem two_is_prime :
-    prime (.succ (.succ .zero)) := by
+    prime ,0.succ.succ := by
   sorry
-  -- unfold prime
-  -- intro a ha hdiv
-
-
-
   -- constructor
-  -- . apply LT_succ
-  -- . intro a a_div_2
-  --   have a_not_gt_2 : ¬GT a ,0.succ.succ
+  -- . exact (lt_succ ,0.succ)
+  -- . intro n hn
+  --   unfold divides at hn
+  --   rcases hn with ⟨a, hn⟩
+  --   rcases a with _ | b
+  --   . contradiction
+  --   . rcases b with _ | c
+  --     . left
+  --       rw [mul_one] at hn
+  --       exact hn
+  --     . right
+  --       rcases c with _ | d
+  --       . rw [mul_succ]
+  --         sorry
+  --       . exfalso
+
+
 
 
 theorem three_is_prime :
