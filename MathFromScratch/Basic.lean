@@ -289,39 +289,49 @@ theorem mul_comm (a b : Nat) :
 
 theorem mul_succ_eq_zero_implies_zero (a b : Nat) :
     mul a b.succ = ,0 → a = ,0 := by
-  sorry
+  intro h
+  cases a with
+  | zero => rfl
+  | succ a => contradiction
 
 theorem succ_mul_eq_zero_implies_zero (a b : Nat) :
     mul a.succ b = ,0 → b = ,0 := by
-  sorry
-
-theorem mul_eq_zero_implies_either_eq_zero (a b : Nat) :
-    mul a b = ,0 → (a = ,0) ∨ (b = ,0) := by
   intro h
-  sorry
+  cases b with
+  | zero => rfl
+  | succ b => contradiction
+
+theorem nonzero_mul_eq_zero_implies_other_eq_zero (a b : Nat) :
+    mul a b = ,0 → ¬(a = ,0) → b = ,0 := by
+  intro h ha
+  cases b with
+  | zero => rfl
+  | succ b =>
+    rw [mul_succ] at h
+    apply add_eq_zero_implies_right_zero at h
+    contradiction
+  -- cases a with
+  -- | zero => contradiction
+  -- | succ a =>
+  --   -- apply succ_both_sides
+  --   -- apply succ_mul_eq_zero_implies_zero a
+  --   -- exact h
+  --   have hb : b = ,0 := by
+  --     apply succ_mul_eq_zero_implies_zero at h
+  --     exact h
+  --   rw [hb]
 
 theorem mul_eq_left_implies_right_eq_one (a b : Nat) :
     mul a b = a → ¬(a = ,0) → b = ,1 := by
   intro h ha
   cases b with
   | zero =>
-    -- rw [mul_zero] at h
-    -- rw [h] at ha
-    -- contradiction
     tauto
   | succ b =>
     rw [mul_succ] at h
     apply add_right_cancel_to_zero at h
-    cases a with
-    | zero => contradiction
-    | succ a =>
-      -- apply succ_both_sides
-      -- apply succ_mul_eq_zero_implies_zero a
-      -- exact h
-      have hb : b = ,0 := by
-        apply succ_mul_eq_zero_implies_zero at h
-        exact h
-      rw [hb]
+    apply succ_both_sides
+    exact (nonzero_mul_eq_zero_implies_other_eq_zero a b h ha)
 
 
 theorem mul_right_cancel (a b c : Nat) :
