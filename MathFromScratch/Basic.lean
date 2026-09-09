@@ -101,6 +101,11 @@ theorem succ_cancel (a b : Nat) :
   intro h
   injection h
 
+theorem succ_both_sides (a b : Nat) :
+    a = b → a.succ = b.succ := by
+  intro h
+  rw [h]
+
 theorem succ_eq (a b : Nat) :
     a = b → a.succ = b.succ := by
   intro h
@@ -128,6 +133,27 @@ theorem add_left_cancel (a b c : Nat) :
   nth_rewrite 1 [add_comm]
   nth_rewrite 2 [add_comm]
   apply add_right_cancel
+
+theorem add_right_cancel_to_zero (a b : Nat) :
+    add a b = b → a = ,0 := by
+  intro h
+  induction b with
+  | zero =>
+      -- rw [← add_zero a]
+      -- exact h
+      rw [add_zero] at h
+      exact h
+  | succ n ih =>
+      rw [add_succ] at h
+      -- injection h with h
+      simp at h
+      exact ih h
+
+theorem add_left_cancel_to_zero (a b : Nat) :
+    add a b = a → b = ,0 := by
+  rw [add_comm]
+  apply add_right_cancel_to_zero
+
 
 theorem succ_never_zero (a : Nat) :
   ¬(a.succ = ,0) := by
@@ -260,10 +286,57 @@ theorem mul_comm (a b : Nat) :
     rw [succ_mul]
     rw [ih]
 
-theorem mul_eq_implies_eq_one (a b : Nat) :
-    mul a b = a → b = ,1 := by
+
+theorem mul_succ_eq_zero_implies_zero (a b : Nat) :
+    mul a b.succ = ,0 → a = ,0 := by
+  sorry
+
+theorem succ_mul_eq_zero_implies_zero (a b : Nat) :
+    mul a.succ b = ,0 → b = ,0 := by
+  sorry
+
+theorem mul_eq_zero_implies_either_eq_zero (a b : Nat) :
+    mul a b = ,0 → (a = ,0) ∨ (b = ,0) := by
   intro h
   sorry
+
+theorem mul_eq_left_implies_right_eq_one (a b : Nat) :
+    mul a b = a → ¬(a = ,0) → b = ,1 := by
+  intro h ha
+  cases b with
+  | zero =>
+    -- rw [mul_zero] at h
+    -- rw [h] at ha
+    -- contradiction
+    tauto
+  | succ b =>
+    rw [mul_succ] at h
+    apply add_right_cancel_to_zero at h
+    cases a with
+    | zero => contradiction
+    | succ a =>
+      -- apply succ_both_sides
+      -- apply succ_mul_eq_zero_implies_zero a
+      -- exact h
+      have hb : b = ,0 := by
+        apply succ_mul_eq_zero_implies_zero at h
+        exact h
+      rw [hb]
+
+
+theorem mul_right_cancel (a b c : Nat) :
+    mul a c = mul b c → ¬(c = ,0) → a = b := by
+  intro h hc
+  sorry
+  -- cases c with
+  -- | zero => contradiction
+  -- | succ n =>
+  --   induction n with
+  --   | zero =>
+  --     simp [mul_one] at h
+  --     exact h
+  --   | succ n ih =>
+
 
 
 end math
